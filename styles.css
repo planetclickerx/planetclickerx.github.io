@@ -1,0 +1,638 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Orbitron', sans-serif;
+    overflow: auto; /* Đảm bảo cuộn hoạt động */
+    background: #ffffff
+}
+
+body {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-top: env(safe-area-inset-top, 0);
+}
+
+
+#game-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Đảm bảo game chiếm ít nhất toàn màn hình */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s ease;
+    padding-top: 50px; /* Tránh top-menu che */
+    background: linear-gradient(135deg, #000000, #1a1a2e); /* Nền đen cho phần game */
+    overflow: hidden;
+}
+
+#energy {
+    font-size: 28px;
+    margin-bottom: 20px;
+    transition: margin 0.2s ease;
+}
+
+#planet {
+    width: 250px;
+    height: 250px;
+    background-size: cover;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+    transition: transform 0.5s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#planet.locked {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+
+#planet:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: #000000;
+    text-shadow: 0 0 10px #ffffff;
+    display: none;
+}
+
+#game-container:hover #energy {
+    margin-bottom: 30px;
+}
+
+#game-container:hover #controls {
+    margin-top: 30px;
+}
+
+#controls {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: margin 0.2s ease;
+}
+
+#button-container {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    display: flex;
+    gap: 20px;
+    z-index: 1001;
+}
+
+.button {
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #333333, #4a4a4a);
+    color: #e0e0e0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background 0.3s;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 1001;
+}
+
+.button:hover {
+    background: linear-gradient(45deg, #555555, #6a6a6a);
+    transform: translateY(-2px);
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 24px;
+    transition: color 0.3s, transform 0.2s;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.nav-button:hover {
+    transform: scale(1.3);
+}
+
+#planet-name-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#planet-name {
+    color: #e0e0e0;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    line-height: 28px;
+    text-shadow: 0 0 5px #e0e0e0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#unlock-button {
+    padding: 8px 20px;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+    width: 100px;
+    margin: 0 auto;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#unlock-button:hover {
+    background: #e0e0e0;
+}
+
+#unlock-button:disabled {
+    background: #555555;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#price-info {
+    color: #ffffff;
+    text-shadow: 0 0 5px #00ffcc;
+    font-size: 14px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    width: 200px;
+    margin: 0 auto;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.plus-one {
+    position: absolute;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ffffff;
+    pointer-events: none;
+    animation: float 1.2s ease-out forwards;
+    font-family: 'Orbitron', sans-serif;
+}
+
+@keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+}
+
+.star {
+    position: absolute;
+    background: radial-gradient(circle, #ffffff, #cccccc);
+    border-radius: 50%;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 0.8; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.snowflake {
+    position: absolute;
+    background: radial-gradient(circle, #ffffff, #e0e0e0);
+    border-radius: 50%;
+    animation: snowFall 10s linear infinite;
+}
+
+@keyframes snowFall {
+    0% { transform: translateY(-100%) rotate(0deg); opacity: 0.7; }
+    20% { transform: translateY(20vh) rotate(90deg); }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+#shop-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #222222, #2e2e3e);
+    padding: 30px;
+    border-radius: 15px;
+    color: #e0e0e0;
+    width: 500px;
+    max-height: 600px;
+    overflow-y: auto;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    z-index: 1000;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#shop-modal h2 {
+    margin-top: 0;
+    color: #00ffcc;
+    text-align: center;
+    text-shadow: 0 0 10px #00ffcc;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.shop-item {
+    margin: 20px 0;
+    padding: 20px;
+    background: #333333;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.2s;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.shop-item:hover {
+    transform: translateY(-5px);
+}
+
+.shop-item span {
+    font-size: 16px;
+    flex: 2;
+    text-align: left;
+}
+
+.shop-item i {
+    margin-right: 10px;
+}
+
+.shop-item .fa-meteor { color: #c0c0c0; }
+.shop-item .fa-bolt { color: #00ff00; }
+.shop-item .fa-robot { color: #00ffff; }
+.shop-item .fa-solar-panel { color: #ff9900; }
+.shop-item .fa-leaf { color: #00ff00; }
+.shop-item .fa-wind { color: #add8e6; }
+.shop-item .fa-industry { color: #ff4500; }
+
+.shop-item button {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #00ffff, #00ffff);
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s, opacity 0.2s;
+    font-family: 'Orbitron', sans-serif;
+    flex: 1;
+    text-align: center;
+}
+
+.shop-item button:hover {
+    background: linear-gradient(45deg, #00ffff, #00ffff);
+}
+
+.shop-item button:disabled {
+    background: #555555;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#close-shop {
+    display: block;
+    margin: 25px auto 0;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #ff3333, #cc0000);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s, background 0.3s;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#close-shop:hover {
+    background: linear-gradient(45deg, #cc0000, #990000);
+    transform: translateY(-2px);
+}
+
+/* Top Menu Styles */
+.top-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-bottom: 2px solid #ff4d4d;
+}
+
+.top-menu .logo {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.top-menu .logo a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.top-menu .menu-links {
+    display: flex;
+    gap: 20px;
+    padding-right: 20px;
+    margin-right: 10px;
+}
+
+.top-menu .menu-links a {
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Orbitron', sans-serif;
+    transition: color 0.3s;
+}
+
+.top-menu .menu-links a:hover {
+    color: #ff4d4d;
+}
+
+/* About Us Page Styles */
+.about-container {
+    padding: 80px 20px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    color: #000000;
+    background: #ffffff;
+    min-height: 100vh;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.about-container h1 {
+    font-size: 36px;
+    color: #000000;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-container p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    background: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.about-page {
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: auto;
+}
+
+/* Phần mô tả game */
+.description-wrapper {
+    background: #ffffff; /* Nền trắng cho toàn bộ phần mô tả */
+    padding: 20px 0;
+}
+
+.game-info {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    font-family: 'Orbitron', sans-serif;
+    color: #000; /* Chữ đen */
+    background: #ffffff; /* Nền trắng */
+}
+
+.game-info h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ff4d4d;
+}
+
+.game-info h3 {
+    font-size: 20px;
+    color: #000000;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.game-info p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #000;
+}
+
+.game-info ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.game-info li {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.game-info a {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.game-info a:hover {
+    text-decoration: underline;
+}
+
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000000;
+}
+
+@media (max-width: 768px) {
+    /* Top Menu Responsive */
+    .top-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        z-index: 2000;
+    }
+
+    .top-menu .menu-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #ffffff;
+        padding: 10px 0;
+        z-index: 2001;
+    }
+
+    .top-menu .menu-links.active {
+        display: flex;
+    }
+
+    .top-menu .menu-links a {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .hamburger {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .menu-links.active ~ #game-container #button-container {
+        display: none;
+    }
+
+    /* Game Container */
+    #game-container {
+        padding-top: 60px;
+    }
+
+    /* Energy */
+    #energy {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* Planet */
+    #planet {
+        width: 150px;
+        height: 150px;
+    }
+
+    /* Button Container */
+    #button-container {
+        top: 80px; /* Điều chỉnh vị trí để tránh thanh điều hướng */
+        right: 10px;
+        gap: 10px;
+        z-index: 1001;
+    }
+
+    .button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    /* Planet Name */
+    #planet-name {
+        font-size: 18px;
+    }
+
+    /* Controls */
+    #controls {
+        margin-top: 15px;
+        gap: 10px;
+    }
+
+    .nav-button {
+        font-size: 20px;
+    }
+
+    /* Unlock Button */
+    #unlock-button {
+        font-size: 14px;
+        width: 80px;
+    }
+
+    /* Price Info */
+    #price-info {
+        font-size: 12px;
+        width: 150px;
+    }
+
+    /* Shop Modal */
+    #shop-modal {
+        width: 90%;
+        padding: 20px;
+        z-index: 1002;
+    }
+
+    .shop-item {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .shop-item span, .shop-item button {
+        flex: none;
+    }
+
+    .shop-item button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Energy */
+    #energy {
+        font-size: 18px;
+    }
+
+    /* Planet */
+    #planet {
+        width: 120px;
+        height: 120px;
+    }
+
+    /* Button Container */
+    #button-container {
+        top: 70px;
+        right: 5px;
+        gap: 8px;
+    }
+
+    .button {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+
+    /* Planet Name */
+    #planet-name {
+        font-size: 16px;
+    }
+
+    /* Controls */
+    .nav-button {
+        font-size: 18px;
+    }
+}
