@@ -1,0 +1,633 @@
+/* Base styles for desktop/web version */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Orbitron', sans-serif;
+    overflow: auto;
+    background: #ffffff;
+}
+
+body {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Sound button container */
+.sound-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+/* Game wrapper layout */
+.game-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 50px;
+    background: linear-gradient(135deg, #000000, #1a1a2e);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated starfield background */
+.starfield {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.star-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+/* Add twinkle animation */
+@keyframes twinkle {
+    0% { opacity: var(--base-opacity, 0.7); }
+    50% { opacity: var(--base-opacity, 0.7) * 0.5; }
+    100% { opacity: var(--base-opacity, 0.7); }
+}
+
+#game-container {
+    position: relative;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Shop section styles */
+#shop-section {
+    width: 25%;
+    background: rgba(20, 20, 20, 0.95);
+    padding: 20px;
+    border-left: 2px solid #00ffcc;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    color: #e0e0e0;
+    z-index: 1;
+    border-left: 2px solid rgba(0, 255, 204, 0.5);
+    animation: shop-border-glow 3s infinite ease-in-out;
+}
+
+@keyframes shop-border-glow {
+    0% {
+        border-left-color: rgba(0, 255, 204, 0.3);
+    }
+    50% {
+        border-left-color: rgba(0, 255, 204, 0.7);
+    }
+    100% {
+        border-left-color: rgba(0, 255, 204, 0.3);
+    }
+}
+
+/* Energy display */
+#energy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 25px;
+    padding: 8px 15px;
+    background: transparent;
+    border: none;
+}
+
+.energy-value {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+    letter-spacing: 1px;
+}
+
+.energy-label {
+    font-size: 16px;
+    color: #cccccc;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 300;
+    text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+}
+
+/* Energy changing animation */
+@keyframes energy-update {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.energy-update {
+    animation: energy-update 0.4s ease-out;
+}
+
+/* Planet styles */
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 20px var(--glow-color, #00ffcc); }
+    50% { transform: scale(1.02); box-shadow: 0 0 30px var(--glow-color, #00ffcc); }
+    100% { transform: scale(1); box-shadow: 0 0 20px var(--glow-color, #00ffcc); }
+}
+
+#planet {
+    width: 250px;
+    height: 250px;
+    background-size: cover;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    z-index: 5;
+    --glow-color: #00ffcc;
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: auto;
+}
+
+#planet.locked {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+
+#planet:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px #00ffcc;
+}
+
+/* Planet atmospheres */
+.planet-atmosphere {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.15;
+    background: radial-gradient(closest-side, transparent 80%, var(--atmosphere-color, #5a8ec5) 95%);
+    z-index: 2;
+}
+
+/* Click ripple effect */
+@keyframes ripple {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+.click-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+}
+
+/* Planet glow effect */
+.planet-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0.4;
+    z-index: -1;
+    background: radial-gradient(circle at center, var(--glow-color, #00ffcc) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: #000000;
+    text-shadow: 0 0 10px #ffffff;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#game-container:hover #energy {
+    margin-bottom: 30px;
+}
+
+#game-container:hover #controls {
+    margin-top: 30px;
+}
+
+#controls {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: margin 0.2s ease;
+}
+
+.button {
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #333333, #4a4a4a);
+    color: #e0e0e0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background 0.3s;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 1001;
+}
+
+.button:hover {
+    background: linear-gradient(45deg, #555555, #6a6a6a);
+    transform: translateY(-2px);
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 24px;
+    transition: color 0.3s, transform 0.2s;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.nav-button:hover {
+    transform: scale(1.3);
+}
+
+#planet-name-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#planet-name {
+    color: #e0e0e0;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    line-height: 28px;
+    text-shadow: 0 0 5px #e0e0e0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#unlock-button {
+    padding: 8px 20px;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+    width: 100px;
+    margin: 0 auto;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#unlock-button:hover {
+    background: #e0e0e0;
+}
+
+#unlock-button:disabled {
+    background: #555555;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#price-info {
+    color: #ffffff;
+    text-shadow: 0 0 5px #00ffcc;
+    font-size: 14px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    width: 200px;
+    margin: 0 auto;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Animation for +energy text */
+@keyframes float-energy {
+    0% { opacity: 0; transform: translateY(0) scale(0.8); }
+    10% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-50px) scale(1.5) rotate(5deg); }
+}
+
+.plus-one {
+    position: absolute;
+    color: var(--energy-color, #00ffcc);
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 0 8px var(--energy-color, #00ffcc);
+    pointer-events: none;
+    animation: float-energy 1.5s ease-out forwards;
+}
+
+/* Star and comet effects */
+.star {
+    position: absolute;
+    background: radial-gradient(circle, #ffffff, #cccccc);
+    border-radius: 50%;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 0.8; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* Comet animation */
+@keyframes comet {
+    0% { transform: translate(-5%, -5%) rotate(45deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(110%, 110%) rotate(45deg); opacity: 0; }
+}
+
+.comet {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+    opacity: 0;
+    transform-origin: center;
+    z-index: 1;
+    pointer-events: none;
+    animation: comet 3s linear forwards;
+    box-shadow: 0 0 10px #fff;
+}
+
+.comet::after {
+    content: '';
+    position: absolute;
+    width: 8px; 
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    top: -3px;
+    right: 0;
+    box-shadow: 0 0 10px 2px #fff;
+}
+
+/* Shop items styling */
+.shop-item {
+    margin: 15px 10px;
+    padding: 15px;
+    background: linear-gradient(to right, #1e1e2d, #252536);
+    border-radius: 10px;
+    border: 1px solid #00ffcc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-out;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 
+        "icon content counter";
+    align-items: center;
+    column-gap: 15px;
+}
+
+.shop-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    border-color: #00ffcc;
+}
+
+.shop-item.can-buy {
+    border-color: #00ffcc;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+}
+
+.shop-item.can-buy:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+}
+
+.shop-item.locked {
+    opacity: 0.85;
+    border-color: #333;
+    background: linear-gradient(to right, #1a1a25, #222230);
+}
+
+.item-icon {
+    grid-area: icon;
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3), inset 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.item-content {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+.item-counter {
+    grid-area: counter;
+    font-size: 16px;
+    font-weight: bold;
+    color: #00ffcc;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
+}
+
+.item-name {
+    font-size: 17px;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 3px;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.item-energy {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+.item-price {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.money-icon {
+    font-size: 13px;
+    margin-right: 3px;
+    color: #ffcc00;
+}
+
+/* Enhanced shop item hover effect */
+.shop-item:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(0, 255, 204, 0) 0%,
+        rgba(0, 255, 204, 0.1) 50%,
+        rgba(0, 255, 204, 0) 100%);
+    z-index: 1;
+    pointer-events: none;
+    animation: shop-item-shine 1.5s ease-out infinite;
+}
+
+@keyframes shop-item-shine {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Icon colors */
+.shop-item .fa-bolt { color: #00ff00; }
+.shop-item .fa-robot { color: #00ffff; }
+.shop-item .fa-solar-panel { color: #ff9900; }
+.shop-item .fa-leaf { color: #00ff00; }
+.shop-item .fa-wind { color: #add8e6; }
+.shop-item .fa-industry { color: #ff4500; }
+
+/* Effects canvas */
+#effects-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Top Menu Styles */
+.top-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-bottom: 2px solid #ff4d4d;
+}
+
+.top-menu .logo {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.top-menu .logo a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.top-menu .menu-links {
+    display: flex;
+    gap: 20px;
+    padding-right: 20px;
+    margin-right: 10px;
+}
+
+.top-menu .menu-links a {
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Orbitron', sans-serif;
+    transition: color 0.3s;
+}
+
+.top-menu .menu-links a:hover {
+    color: #ff4d4d;
+}
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000000;
+}
+
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    background: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Purchase flash animation */
+@keyframes purchaseFlash {
+    0% { background: rgba(0, 255, 204, 0.5); }
+    100% { background: linear-gradient(to right, #1e1e2d, #252536); }
+}
+
+.purchase-flash {
+    animation: purchaseFlash 0.8s ease-out;
+}
+
+/* Planet energy glow on milestone */
+@keyframes planet-energy-boost {
+    0% {
+        box-shadow: 0 0 20px var(--glow-color, #00ffcc);
+    }
+    50% {
+        box-shadow: 0 0 50px var(--glow-color, #00ffcc), 0 0 100px var(--glow-color, #00ffcc);
+    }
+    100% {
+        box-shadow: 0 0 20px var(--glow-color, #00ffcc);
+    }
+}
+
+.planet-energy-boost {
+    animation: planet-energy-boost 2s ease-in-out;
+}
