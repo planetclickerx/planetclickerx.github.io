@@ -1,0 +1,315 @@
+/* Mobile-specific styles */
+
+/* General mobile styles - Applies to all screens under 768px */
+@media (max-width: 768px) {
+    /* Layout adjustments */
+    .game-wrapper {
+        flex-direction: column;
+    }
+    
+    #game-container {
+        width: 100%;
+        padding: 60px 0 20px 0; /* Extra padding at top for fixed energy display */
+        min-height: 60vh;
+    }
+    
+    #shop-section {
+        width: 100%;
+        border-left: none;
+        border-top: 2px solid #00ffcc;
+        padding: 10px;
+        max-height: 40vh;
+        overflow-y: auto;
+        padding-bottom: 70px; /* Extra padding for mobile bottom navigation */
+    }
+    
+    /* Fixed energy display */
+    #energy {
+        text-align: center;
+        width: auto;
+        min-width: 120px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 10px;
+        padding: 5px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .energy-value {
+        font-size: 28px;
+        color: #00ffcc; /* More visible cyan color */
+        text-shadow: 0 0 10px #00ffcc, 0 0 15px #00ffcc, 0 0 20px #00ffcc;
+    }
+    
+    .energy-label {
+        font-size: 14px;
+        margin-top: -3px; /* Tighter spacing */
+    }
+    
+    /* Make sound button more visible */
+    .sound-button-container {
+        
+        z-index: 1100;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 5px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(0, 255, 204, 0.3);
+    }
+    
+    .button {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 30px;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Planet adjustments */
+    #planet {
+        width: 180px;
+        height: 180px;
+        margin: 15px auto;
+    }
+    
+    /* Navigation controls */
+    #controls {
+        margin-top: 15px;
+        gap: 30px;
+    }
+    
+    .nav-button {
+        font-size: 22px;
+        padding: 0 15px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 50%;
+    }
+    
+    /* Hamburger menu for top navigation */
+    .top-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        z-index: 2000;
+    }
+    
+    .top-menu .logo {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+    
+    .top-menu .menu-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #ffffff;
+        padding: 10px 0;
+        z-index: 2001;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .top-menu .menu-links.active {
+        display: flex;
+    }
+    
+    .top-menu .menu-links a {
+        padding: 12px 20px;
+        font-size: 14px;
+        border-bottom: 1px solid #eeeeee;
+        width: 100%;
+    }
+    
+    .top-menu .menu-links a:last-child {
+        border-bottom: none;
+    }
+    
+    .hamburger {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        font-size: 20px;
+        z-index: 2002;
+    }
+    
+    /* Adjusted shop items for mobile */
+    .shop-item {
+        margin: 10px 5px;
+        padding: 12px 10px;
+    }
+    
+    .item-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+    
+    .item-name {
+        font-size: 15px;
+    }
+    
+    .item-energy {
+        font-size: 13px;
+    }
+    
+    .item-price {
+        font-size: 13px;
+    }
+    
+    .item-counter {
+        font-size: 14px;
+    }
+}
+
+/* Smaller phone styles */
+@media (max-width: 480px) {
+    .energy-value {
+        font-size: 24px;
+    }
+    
+    .energy-label {
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+    
+    #planet {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .nav-button {
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+    }
+    
+    .sound-button-container {
+        width: 36px;
+        height: 36px;
+        top: 60px;
+        left: 5px;
+    }
+    
+    .shop-item {
+        margin: 8px 3px;
+        padding: 10px 8px;
+    }
+    
+    .item-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+    }
+    
+    .item-name {
+        font-size: 14px;
+    }
+    
+    .item-energy, .item-price {
+        font-size: 12px;
+    }
+    
+    .item-counter {
+        font-size: 13px;
+    }
+    
+    .top-menu .logo {
+        font-size: 18px;
+    }
+    
+    .hamburger {
+        font-size: 18px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+    .energy-value {
+        font-size: 22px;
+    }
+    
+    .energy-label {
+        font-size: 10px;
+    }
+    
+    #planet {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .nav-button {
+        font-size: 16px;
+        width: 30px;
+        height: 30px;
+    }
+    
+    .shop-item {
+        padding: 8px 5px;
+    }
+    
+    .item-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+    
+    .item-name {
+        font-size: 12px;
+    }
+    
+    .item-energy, .item-price {
+        font-size: 10px;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .game-wrapper {
+        flex-direction: row;
+    }
+    
+    #game-container {
+        width: 60%;
+        min-height: 100vh;
+    }
+    
+    #shop-section {
+        width: 40%;
+        border-left: 2px solid #00ffcc;
+        border-top: none;
+        max-height: 100vh;
+    }
+    
+    #planet {
+        width: 120px;
+        height: 120px;
+    }
+    
+    #energy {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .sound-button-container {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+}
